@@ -14,8 +14,6 @@ import {
   IconButton,
   List,
   Link,
-  // Menu,
-  // MenuItem,
   Paper,
   TableContainer,
   TableCell,
@@ -28,7 +26,6 @@ import {
   Typography,
 } from "@mui/material";
 
-// import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
 import DashboardOutlinedIcon from "@mui/icons-material/DashboardOutlined";
 import PeopleAltOutlinedIcon from "@mui/icons-material/PeopleAltOutlined";
 import GroupsOutlinedIcon from "@mui/icons-material/GroupsOutlined";
@@ -49,22 +46,12 @@ export default function Header() {
     },
     { name: "Material User Interface", link: "https://mui.com/" },
     { name: "Axios", link: "https://axios-http.com/" },
-    { name: "Bcryptjs", link: "https://github.com/dcodeIO/bcrypt.js" },
+    { name: "BcryptJS", link: "https://github.com/dcodeIO/bcrypt.js" },
     { name: "Formik", link: "https://formik.org/" },
     { name: "Yup", link: "https://github.com/jquense/yup" },
     { name: "Json-server", link: "https://github.com/typicode/json-server" },
     { name: "Git", link: "https://github.com/Webert-Souza/fast-crud" },
   ];
-
-  // const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-
-  // const handleMenu = (event: React.MouseEvent<HTMLElement>) => {
-  //   setAnchorEl(event.currentTarget);
-  // };
-
-  // const handleClose = () => {
-  //   setAnchorEl(null);
-  // };
 
   return (
     <Box sx={{ display: "flex", mb: 0.5 }}>
@@ -122,35 +109,6 @@ export default function Header() {
                 <PeopleAltOutlinedIcon />
               </IconButton>
             </Tooltip>
-
-            {/*<IconButton
-              size="large"
-              aria-label="Avatar"
-              title="Avatar"
-              onClick={handleMenu}
-              color="inherit"
-            >
-              <AccountCircleOutlinedIcon />
-            </IconButton>
-
-            <Menu
-              id="menu-appbar"
-              anchorEl={anchorEl}
-              anchorOrigin={{
-                vertical: "top",
-                horizontal: "right",
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: "top",
-                horizontal: "right",
-              }}
-              open={Boolean(anchorEl)}
-              onClose={handleClose}
-            >
-              <MenuItem onClick={handleClose}>Profile</MenuItem>
-              <MenuItem onClick={handleClose}>My account</MenuItem>
-            </Menu>*/}
           </div>
         </Toolbar>
       </AppBar>

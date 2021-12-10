@@ -35,23 +35,12 @@ export const UsersForm = () => {
   const [pageHeader, setPageHeader] = useState("");
   const [groups, setGroups] = useState<Group[]>([]);
 
-  // const validateEmail = (value: any) =>
-  //   new Promise(async function (resolve, reject) {
-  //     const response = await usersService.getByEmail(formik.values.email);
-  //     const emailAlreadyUsed: Boolean = +id
-  //       ? response.data[0].id !== +id
-  //       : response.data.length > 0;
-  //     resolve(emailAlreadyUsed);
-  //   });
-
   const validationSchema = yup.object({
     name: yup
       .string()
       .required("Campo obrigatório")
       .matches(/^[a-zA-Z ]+$/, "Digite apenas letras")
       .min(3, "Mínimo 3 caracteres"),
-    //.lowercase()
-    //.notOneOf(["admin", "administrador"], "Esse nome não pode ser usado.").when,
     email: yup.string().required("Campo obrigatório").email("Email inválido"),
     password: yup
       .string()
@@ -119,13 +108,6 @@ export const UsersForm = () => {
     },
     validationSchema,
     onSubmit,
-    // validate: async (value) => {
-    //   const response = await usersService.getByEmail(formik.values.email);
-    //   const emailAlreadyUsed: Boolean = +id
-    //     ? response.data[0].id !== +id
-    //     : response.data.length > 0;
-    //   return emailAlreadyUsed;
-    // },
   });
 
   const options = [
@@ -176,14 +158,6 @@ export const UsersForm = () => {
           icon={PeopleAltOutlinedIcon}
           options={options}
         />
-
-        {/*<Snackbar
-          anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
-          open={!email}
-          autoHideDuration={3000}
-          onClose={() => setEmail(true)}
-          message="Email já utilizado por outro usuário."
-        />*/}
 
         <Snackbar
           open={!email}
