@@ -18,6 +18,7 @@ import {
   TableHead,
   TableRow,
   TextField,
+  Tooltip,
 } from "@mui/material";
 
 import AddOutlinedIcon from "@mui/icons-material/AddOutlined";
@@ -119,11 +120,11 @@ export const UsersList = () => {
 
         <TableContainer component={Paper}>
           <Table size="medium">
-            <TableHead>
+            <TableHead sx={{ backgroundColor: "#ddd" }}>
               <TableRow>
                 <TableCell>Nº</TableCell>
                 <TableCell>Nome</TableCell>
-                <TableCell>E-mail</TableCell>
+                <TableCell>Email</TableCell>
                 <TableCell>Grupo</TableCell>
                 <TableCell align="center">Data Cadastro</TableCell>
                 <TableCell align="center">Ações</TableCell>
@@ -141,41 +142,44 @@ export const UsersList = () => {
                     {formatDate(user.created_at as Date)}
                   </TableCell>
                   <TableCell align="center">
-                    <IconButton
-                      size="large"
-                      edge="start"
-                      color="info"
-                      aria-label="menu"
-                      title="Detalhes"
-                      sx={{ fontWeight: "normal" }}
-                      onClick={() => detailsUser(user)}
-                    >
-                      <DetailsOutlinedIcon />
-                    </IconButton>
+                    <Tooltip title="Detalhes" arrow placement="bottom">
+                      <IconButton
+                        size="large"
+                        edge="start"
+                        color="info"
+                        aria-label="menu"
+                        sx={{ fontWeight: "normal" }}
+                        onClick={() => detailsUser(user)}
+                      >
+                        <DetailsOutlinedIcon />
+                      </IconButton>
+                    </Tooltip>
 
-                    <IconButton
-                      size="large"
-                      edge="start"
-                      color="info"
-                      aria-label="menu"
-                      title="Editar"
-                      onClick={() => history.push(`users/update/${user.id}`)}
-                    >
-                      <EditOutlinedIcon />
-                    </IconButton>
+                    <Tooltip title="Editar" arrow placement="bottom">
+                      <IconButton
+                        size="large"
+                        edge="start"
+                        color="info"
+                        aria-label="menu"
+                        onClick={() => history.push(`users/update/${user.id}`)}
+                      >
+                        <EditOutlinedIcon />
+                      </IconButton>
+                    </Tooltip>
 
-                    <IconButton
-                      size="large"
-                      edge="start"
-                      color="error"
-                      aria-label="menu"
-                      title="Excluir"
-                      disabled={user.id === 1 ? true : false}
-                      sx={{ fontWeight: "normal" }}
-                      onClick={() => deleteUser(user)}
-                    >
-                      <DeleteOutlinedIcon />
-                    </IconButton>
+                    <Tooltip title="Excluir" arrow placement="bottom">
+                      <IconButton
+                        size="large"
+                        edge="start"
+                        color="error"
+                        aria-label="menu"
+                        disabled={user.id === 1 ? true : false}
+                        sx={{ fontWeight: "normal" }}
+                        onClick={() => deleteUser(user)}
+                      >
+                        <DeleteOutlinedIcon />
+                      </IconButton>
+                    </Tooltip>
                   </TableCell>
                 </TableRow>
               ))}
@@ -200,7 +204,7 @@ export const UsersList = () => {
             />
             <TextField
               margin="normal"
-              label="E-mail"
+              label="Email"
               fullWidth
               InputProps={{
                 readOnly: true,

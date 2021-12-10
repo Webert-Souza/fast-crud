@@ -62,7 +62,7 @@ export const GroupsList = () => {
 
         <TableContainer component={Paper}>
           <Table size="medium">
-            <TableHead>
+            <TableHead sx={{ backgroundColor: "#ddd" }}>
               <TableRow>
                 <TableCell>Nº</TableCell>
                 <TableCell>Grupo</TableCell>

@@ -2,7 +2,14 @@ import React from "react";
 
 import { useHistory } from "react-router-dom";
 
-import { Box, IconButton, Toolbar, Typography, SvgIcon } from "@mui/material";
+import {
+  Box,
+  IconButton,
+  Toolbar,
+  Tooltip,
+  Typography,
+  SvgIcon,
+} from "@mui/material";
 
 import { SvgIconComponent } from "@mui/icons-material";
 
@@ -52,20 +59,21 @@ export const PageHeader = ({ name, icon, options }: Props) => {
 
           <div>
             {options.map((option, index) => (
-              <IconButton
-                key={index}
-                size="large"
-                edge="start"
-                aria-label={option.tooltip}
-                title={option.tooltip}
-                disabled={option.disabled ? true : false}
-                onClick={() => {
-                  option.link ? history.push(option.link) : option.cb();
-                }}
-                sx={{ color: "white", ml: 1 }}
-              >
-                <SvgIcon component={option.icon}></SvgIcon>
-              </IconButton>
+              <Tooltip title={option.tooltip} arrow placement="bottom">
+                <IconButton
+                  key={index}
+                  size="large"
+                  edge="start"
+                  aria-label={option.tooltip}
+                  disabled={option.disabled ? true : false}
+                  onClick={() => {
+                    option.link ? history.push(option.link) : option.cb();
+                  }}
+                  sx={{ color: "white", ml: 1 }}
+                >
+                  <SvgIcon component={option.icon}></SvgIcon>
+                </IconButton>
+              </Tooltip>
             ))}
           </div>
         </Toolbar>

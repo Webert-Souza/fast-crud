@@ -6,12 +6,14 @@ import { useFormik } from "formik";
 import * as yup from "yup";
 
 import {
+  Alert,
   Box,
   Button,
-  Grid,
   Container,
-  TextField,
+  Grid,
   MenuItem,
+  Snackbar,
+  TextField,
 } from "@mui/material";
 
 import CloseOutlinedIcon from "@mui/icons-material/CloseOutlined";
@@ -29,6 +31,10 @@ export const UsersForm = () => {
   const { id } = useParams<Params>();
   const history = useHistory();
 
+  const [email, setEmail] = useState(true);
+  const [pageHeader, setPageHeader] = useState("");
+  const [groups, setGroups] = useState<Group[]>([]);
+
   // const validateEmail = (value: any) =>
   //   new Promise(async function (resolve, reject) {
   //     const response = await usersService.getByEmail(formik.values.email);
@@ -42,10 +48,11 @@ export const UsersForm = () => {
     name: yup
       .string()
       .required("Campo obrigatório")
+      .matches(/^[a-zA-Z ]+$/, "Digite apenas letras")
       .min(3, "Mínimo 3 caracteres"),
     //.lowercase()
     //.notOneOf(["admin", "administrador"], "Esse nome não pode ser usado.").when,
-    email: yup.string().required("Campo obrigatório").email("E-mail inválido"),
+    email: yup.string().required("Campo obrigatório").email("Email inválido"),
     password: yup
       .string()
       .required("Campo obrigatório")
@@ -60,15 +67,29 @@ export const UsersForm = () => {
       .moreThan(0, "Selecione uma opção"),
   });
 
+  const validateEmail = async () => {
+    let uniqueEmail = true;
+    const response = await usersService.getByEmail(formik.values.email);
+
+    if (+id) {
+      if (response.data.length > 0 && response.data[0].id !== +id) {
+        uniqueEmail = false;
+      }
+    } else {
+      if (response.data.length > 0) {
+        uniqueEmail = false;
+      }
+    }
+
+    setEmail(uniqueEmail);
+    return uniqueEmail;
+  };
+
   const onSubmit = async () => {
     try {
-      const response = await usersService.getByEmail(formik.values.email);
+      const response = await validateEmail();
 
-      const emailAlreadyUsed = +id
-        ? response.data[0].id !== +id
-        : response.data.length > 0;
-
-      if (!emailAlreadyUsed) {
+      if (response) {
         const user: User = {
           id: +id,
           name: formik.values.name,
@@ -98,17 +119,14 @@ export const UsersForm = () => {
     },
     validationSchema,
     onSubmit,
-    validate: async (value) => {
-      const response = await usersService.getByEmail(formik.values.email);
-      const emailAlreadyUsed: Boolean = +id
-        ? response.data[0].id !== +id
-        : response.data.length > 0;
-      return emailAlreadyUsed;
-    },
+    // validate: async (value) => {
+    //   const response = await usersService.getByEmail(formik.values.email);
+    //   const emailAlreadyUsed: Boolean = +id
+    //     ? response.data[0].id !== +id
+    //     : response.data.length > 0;
+    //   return emailAlreadyUsed;
+    // },
   });
-
-  const [pageHeader, setPageHeader] = useState("");
-  const [groups, setGroups] = useState<Group[]>([]);
 
   const options = [
     { icon: CloseOutlinedIcon, tooltip: "Fechar", link: "/users", cb: null },
@@ -129,20 +147,21 @@ export const UsersForm = () => {
     const loadUser = async () => {
       try {
         const response = await usersService.getById(+id);
-        setPageHeader("Usuários -> Editar");
         formik.initialValues.name = response.data.name;
         formik.initialValues.email = response.data.email;
-        formik.initialValues.password = response.data.password;
-        formik.initialValues.confirmPassword = response.data.password;
+
+        // corrigir ao implantar a tela de login, visto que terei a senha digitada
+        // aqui neste momento só tenho o hash. se eu jogar o hash no campo a senha
+        // será alterada a cada save
+        formik.initialValues.password = "123456"; //response.data.password;
+        formik.initialValues.confirmPassword = formik.initialValues.password;
         formik.initialValues.groupId = response.data.groupId;
         formik.resetForm();
-
-        if (+id === 1) {
-        }
       } catch (error) {}
     };
 
     if (id) {
+      setPageHeader("Usuários -> Editar");
       loadUser();
     } else {
       setPageHeader("Usuários -> Inserir");
@@ -157,6 +176,29 @@ export const UsersForm = () => {
           icon={PeopleAltOutlinedIcon}
           options={options}
         />
+
+        {/*<Snackbar
+          anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+          open={!email}
+          autoHideDuration={3000}
+          onClose={() => setEmail(true)}
+          message="Email já utilizado por outro usuário."
+        />*/}
+
+        <Snackbar
+          open={!email}
+          autoHideDuration={3000}
+          onClose={() => setEmail(true)}
+          anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+        >
+          <Alert
+            onClose={() => setEmail(true)}
+            severity="warning"
+            sx={{ width: "100%" }}
+          >
+            Este email não pode ser utilizado!
+          </Alert>
+        </Snackbar>
 
         <Box
           component="form"
